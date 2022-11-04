@@ -129,7 +129,7 @@ data:
       spin-gate-overrideurl-gitops)
         ## Configured ingress host url as override url
           echo "Substituting gate url"
-          sed -i 's,PROTOCOL,http,g' /tmp/spinnaker/.hal/config
+          sed -i 's,PROTOCOL,https,g' /tmp/spinnaker/.hal/config
           sed -i 's,OVERRIDE_API_URL,spingate311.iswstash.opsmx.com,g' /tmp/spinnaker/.hal/config
         ;;
       spin-deck-overrideurl-gitops)
