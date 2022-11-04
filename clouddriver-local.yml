@@ -21,3 +21,23 @@ kubernetes:
     cachingPolicies: []
     onlySpinnakerManaged: true
     checkPermissionsOnStartup: false
+  - name: "testaccount2"
+    liveManifestCalls: true
+    requiredGroupMembership: []
+    providerVersion: "v2"
+    permissions: {}
+    dockerRegistries: []
+    kubeconfigFile: "configserver:kubeCfg_testaccount2"
+    configureImagePullSecrets: true
+    serviceAccount: false
+    cacheThreads: 1
+    namespaces:
+    - "isd311"
+    omitNamespaces: []
+    kinds: []
+    omitKinds:
+    - "podPreset"
+    customResources: []
+    cachingPolicies: []
+    onlySpinnakerManaged: true
+    checkPermissionsOnStartup: false
