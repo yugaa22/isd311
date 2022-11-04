@@ -1,23 +1,23 @@
 
 # Upgrade Instructions
 
-Please follow these instructions if you are upgrading from 3.10 (to 3.11). The current installtion (3.10) could have been installed using helm (Scenario A) or using the gitops installer (Scenario B). Please follow the steps as per your current scenario.
+Please follow these instructions if you are upgrading from 3.11 (to 3.12). The current installtion (3.11) could have been installed using helm (Scenario A) or using the gitops installer (Scenario B). Please follow the steps as per your current scenario.
 
 **WARNING**: Please backup all the databases, in particualr the Posgres DB, BEFORE begining the upgrade. Backup procedures may differ depending your usage of external DBs and Spinnaker configuration. 
 
 ## Scenario A
 Use these instructions if:
-- You have a 3.10.2 installed using the helm installer (installated prio to Feb 2022) and
+- You have a 3.11.1 installed using the helm installer (installated prio to Feb 2022) and
 - Already have a "gitops-repo" for Spinnaker Configuration
 - Have values.yaml that was used for helm installation
 
 Execute these commands, replacing "gitops-repo" with your repo
 - `git clone `**https://github.com/.../gitops-repo**
-- `git clone https://github.com/OpsMx/standard-isd-gitops.git -b 3.11`
+- `git clone https://github.com/OpsMx/standard-isd-gitops.git -b 3.12`
 - `cp -r standard-isd-gitops/upgrade gitops-repo`  
 - `cd gitops-repo`
-- Copy the existing "values.yaml", that was used for previous installation into this folder. We will call it values-310.yaml
-- diff values-311.yaml values-310.yaml and merge all of your changes into "values.yaml". **NOTE**: In most cases just replacing 3.10.2 with 3.11.1 is enough.
+- Copy the existing "values.yaml", that was used for previous installation into this folder. We will call it values-311.yaml
+- diff values-312.yaml values-311.yaml and merge all of your changes into "values.yaml". **NOTE**: In most cases just replacing 3.11.1 with 3.12.5 is enough.
 - Copy the updated values file as "values.yaml" (file name is important)
 - create gittoken secret. This token will be used to authenticate to the gitops-repo
    - `kubectl -n oes create secret generic gittoken --from-literal gittoken=PUT_YOUR_GITTOKEN_HERE` 
@@ -36,17 +36,24 @@ a) You have a 3.11 installed using gitops installer
 b) Already have a gitops-repo for ISD (AP and Spinnaker) Configuration
 
 Execute these commands, replacing "gitops-repo" with your repo
+Execute these commands, replacing "gitops-repo" with your repo
 - `git clone `**https://github.com/.../gitops-repo**
-- `cd <your gitops-repo>`
+- `git clone https://github.com/OpsMx/standard-isd-gitops.git -b 3.12`
+- `cp -r standard-isd-gitops.git/upgrade gitops-repo`  
+- `cd gitops-repo`
 - Check that a "values.yaml" file exists in this directory (root of the gitops-repo)
 
 ## Common Steps
-Upgrade sequence: (3.10 to 3.11)
+Upgrade sequence: (3.11 to 3.12)
 1. Ensure that "default" account is configured to deploy to the ISD namespace (e.g. oes)
-2. Update Values.yaml. Please set global.commonGate.enabled to "true".
-3. If you have modified "sampleapp" or "opsmx-gitops" applications, please backup them up using "syncToGit" pipeline opsmx-gitops application.
-4. `cd upgrade`
-5. Update upgrade-inputcm.yaml: 
+2. Update Values.yaml: Edit as follows:
+  - In the "global:" section, add the following
+  'gitea: 
+    enabled: false'
+  - In the global section, set commonGate.enabled to "true"
+2. If you have modified "sampleapp" or "opsmx-gitops" applications, please backup them up using "syncToGit" pipeline opsmx-gitops application.
+3. `cd upgrade`
+4. Update upgrade-inputcm.yaml: 
    - url, username and gitemail MUST be updated. TIP: if you have install/inputcm.yaml from previous installation, simply copy-paste these lines here
    - **If ISD Namespace is different from "oes"**: Update namespace (default is opsmx-isd) to the namespace where ISD is installed
 6. **If ISD Namespace is different from "oes"**: Edit serviceaccount.yaml and edit "namespace:" to update it to the ISD namespace (e.g.oes)
@@ -54,9 +61,11 @@ Upgrade sequence: (3.10 to 3.11)
 8. `kubectl -n oes apply -f upgrade-inputcm.yaml`
 9. `kubectl -n oes apply -f serviceaccount.yaml` # Edit namespace if changed from the default "oes"
 10. Upgrade DB:
-   - `kubectl -n oes replace --force -f create-sample-job.yaml` , please wait for 5 min for the job to complete
-   - Execute the DB-Migrate310to311 pipeline in opsmx-gitops application: **Ensure that you select the correct namespace and current ISD version.**
+   - `kubectl -n oes replace --force -f create-sample-job.yaml`
+   - Execute the DB-Migrate310to311 pipeline in opsmx-gitops application. **Ensure that you select the correct namespace and current ISD version.**
    - In the unlikely even that the pipeline is not present(job failed), please copy paste the pipeline-json available in upgrade folder.
+   - This can also be executed as a kubenetes job by executing
+     - `kubectl -n oes apply -f ISD-DB-Migrate-job.yaml`  TOBE TESTED
 11. `kubectl -n oes replace --force -f ISD-Generate-yamls-job.yaml`
    [ Wait for isd-generate-yamls-* pod to complete ]
 12. Compare and merge branch: This job should have created a branch on the gitops-repo with the helmchart version number specified in upgrade-inputcm.yaml. Raise a PR and check what changes are being made. Once satisfied, merge the PR.
@@ -65,7 +74,7 @@ Upgrade sequence: (3.10 to 3.11)
 14 isd-spinnaker-halyard-0 pod should restart automatically. If not, execute this: `kubectl -n opsmx-isd  delete po isd-spinnaker-halyard-0`
 15. Restart all pods:
    - `kubectl -n oes scale deploy -l app=oes --replicas=0` Wait for a min or two
-   - `kubectl -n oes scale deploy -l app=oes --replicas=1` Wait for all pods to come to ready state   ˘
+   - `kubectl -n oes scale deploy -l app=oes --replicas=1` Wait for all pods to come to ready state   
 16. Go to ISD UI and check that version number has changed in the bottom-left corner
 17. Wait for about 5 min for autoconfiguration to take place.
 18. If required: a) Connect Spinnaker again b) Configure pipeline-promotion again. To do this, in the ISD UI:
