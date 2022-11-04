@@ -1,15 +1,15 @@
 apiVersion: v1
 data:
-  url: github.com/ORGANIZATION_OR_USERNAME/GIT-REPO ## e.g github.com/ksrinimba/gitops-repo, url without the leading "https://", the "git-repo" in the documentation
-  username: USERNAME_USED_FOR_AUTHENTICATION
-  gitemail: YOUR_EMAIL@COMPANY.COM
+  url: github.com/yugaa22/isd311 ## e.g github.com/ksrinimba/gitops-repo, url without the leading "https://", the "git-repo" in the documentation
+  username: yugaa22
+  gitemail: yugaa22@gmail.com
 
   #####################################################################################################
   # Typically, there is no need to change the values below this line
   #####################################################################################################
-  branch: main         # Gitrepo branch, MUST be the default branch
+  branch: master         # Gitrepo branch, MUST be the default branch
   version: 3.11.1     # ISD version
-  namespace: opsmx-isd # Namespace to install ISD, best not to change 
+  namespace: isd311 # Namespace to install ISD, best not to change 
   path: install/isd-install.sh  # Script to execute for installation, should not be changed
 
   ## values.yaml can contain secrets encoded as "encrypted:SECRETNAME:SECRETKEY". All the secrets mentioned below are replaced in values.yaml
