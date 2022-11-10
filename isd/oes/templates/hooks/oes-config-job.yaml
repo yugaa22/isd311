@@ -4,6 +4,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
+    moniker.spinnaker.io/application: isd
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook-weight": "5"
@@ -11,20 +12,21 @@ metadata:
     app: oes
     component: oes-config
     heritage: "Helm"
-    release: "isd"
-    chart: "oes-3.11.4"
+    release: "isd311"
+    chart: "oes-3.12.13"
   name: oes-config
 spec:
   template:
     metadata:
       annotations:
         checksum/configmap: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        moniker.spinnaker.io/application: isd
       labels:
         app: oes
         component: oes-config
         heritage: "Helm"
-        release: "isd"
-        chart: "oes-3.11.4"
+        release: "isd311"
+        chart: "oes-3.12.13"
     spec:
       containers:
       - command: ["bash", "/tmp/config/datasource-api.sh" ]
@@ -37,5 +39,5 @@ spec:
       volumes:
       - configMap:
           defaultMode: 420
-          name: isd-oes-datasource-creation
+          name: isd311-oes-datasource-creation
         name: datasource-creation

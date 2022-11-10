@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: isd-openldap
+  name: isd311-openldap
   labels:
     app: openldap
     chart: openldap-1.2.3
-    release: isd
+    release: isd311
     heritage: Helm
 spec:
   ports:
@@ -21,5 +21,5 @@ spec:
       targetPort: ssl-ldap-port
   selector:
     app: openldap
-    release: isd
+    release: isd311
   type: ClusterIP

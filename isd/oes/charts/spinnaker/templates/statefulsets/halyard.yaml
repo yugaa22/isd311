@@ -3,38 +3,41 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: isd-spinnaker-halyard
+  annotations:
+    moniker.spinnaker.io/application: spin
+  name: isd311-spinnaker-halyard
   labels:
-    app: "isd-spinnaker"
+    app: "isd311-spinnaker"
     heritage: "Helm"
-    release: "isd"
+    release: "isd311"
     chart: "spinnaker-2.2.3"
 spec:
-  serviceName: isd-spinnaker-halyard
+  serviceName: isd311-spinnaker-halyard
   replicas: 1
   selector:
     matchLabels:
-      app: "isd-spinnaker"
-      release: "isd"
+      app: "isd311-spinnaker"
+      release: "isd311"
       component: halyard
   template:
     metadata:
       annotations:
-        checksum/configmap: e8d972766d85ad7f3da7616c75fed56647d5ec75475c8ef0fcf36d2ff117e1f8
+        checksum/configmap: 93cb28c66681d871d1f2b2e1ca84735267f5f9f512a25748f77418c89a99d7fa
+        moniker.spinnaker.io/application: spin
       labels:
-        app: "isd-spinnaker"
+        app: "isd311-spinnaker"
         heritage: "Helm"
-        release: "isd"
+        release: "isd311"
         chart: "spinnaker-2.2.3"
         component: halyard
     spec:
-      serviceAccountName: isd-spinnaker-halyard
+      serviceAccountName: isd311-spinnaker-halyard
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
       initContainers:
       - name: "create-halyard-local"
-        image: quay.io/opsmxpublic/awsgit:v2-openssh
+        image: quay.io/opsmxpublic/awsgit:v2-openssh-javalibs
         command:
         - sh
         - /tmp/initscript/init.sh
@@ -43,26 +46,16 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: GIT_CLONE_PARAM
+        - name: GITEA_USER
           valueFrom:
             secretKeyRef:
-              name: opsmx-gitops-auth
-              key: gitcloneparam
-        - name: GIT_USER
+              name: gitea-secret
+              key: username
+        - name: GITEA_PASS
           valueFrom:
             secretKeyRef:
-              name: opsmx-gitops-auth
-              key: gituser
-        - name: GIT_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: opsmx-gitops-auth
-              key: gittoken
-        - name: DYNAMIC_ACCOUNTS_REPO
-          valueFrom:
-            secretKeyRef:
-              name: opsmx-gitops-auth
-              key: dynamicaccountsgituri
+              name: gitea-secret
+              key: password
         volumeMounts:
         - name: halyard-config
           mountPath: /tmp/config
@@ -117,24 +110,24 @@ spec:
         emptyDir: {}
       - name: halyard-overrideurl
         configMap:
-          name: isd-spinnaker-halyard-overrideurl
+          name: isd311-spinnaker-halyard-overrideurl
       - name: secret-decoder
         configMap:
-          name: isd-spinnaker-spin-secret-decoder
+          name: isd311-spinnaker-spin-secret-decoder
       - name: reg-secrets
         secret:
-          secretName: isd-spinnaker-registry
+          secretName: isd311-spinnaker-registry
       - name: additional-profile-config-maps
         configMap:
-          name: isd-spinnaker-additional-profile-config-maps
+          name: isd311-spinnaker-additional-profile-config-maps
       - name: halyard-config
         emptyDir: {}
       - name: service-settings
         configMap:
-          name: isd-spinnaker-service-settings
+          name: isd311-spinnaker-service-settings
       - name: halyard-initscript
         configMap:
-          name: isd-spinnaker-halyard-init-script
+          name: isd311-spinnaker-halyard-init-script
       containers:
       - name: halyard
         image: quay.io/opsmxpublic/ubi8-spin-halyard:opsmx-1.40.0

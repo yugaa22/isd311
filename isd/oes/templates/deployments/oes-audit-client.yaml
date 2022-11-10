@@ -3,12 +3,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    moniker.spinnaker.io/application: isd
   labels:
     app: oes
     component: auditclient
     heritage: "Helm"
-    release: "isd"
-    chart: "oes-3.11.4"
+    release: "isd311"
+    chart: "oes-3.12.13"
   name: oes-audit-client
 spec:
   replicas: 1
@@ -20,6 +22,7 @@ spec:
     metadata:
       annotations:
         configmap/checksum: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        moniker.spinnaker.io/application: isd
         prometheus.io/scrape: "true"
         prometheus_io_path: /prometheus
         prometheus_io_port: "8098"
@@ -27,8 +30,8 @@ spec:
         app: oes
         component: auditclient
         heritage: "Helm"
-        release: "isd"
-        chart: "oes-3.11.4"
+        release: "isd311"
+        chart: "oes-3.12.13"
     spec:
       containers:
       - image: quay.io/opsmxpublic/ubi8-oes-audit-client:v3.11.1 
@@ -62,6 +65,9 @@ spec:
         - mountPath: /opsmx/conf/bootstrap.yml
           name: bootstrap-config-volume
           subPath: bootstrap.yml
+        - mountPath: /opsmx/conf/standard-error-code.csv
+          name: standard-error-conf
+          subPath: standard-error-codes.csv
       volumes:
       - secret:
           items:
@@ -73,3 +79,10 @@ spec:
         secret:
           defaultMode: 420
           secretName: bootstrap
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: standard-error-codes.csv
+            path: standard-error-codes.csv
+          name: standard-error-codes-config
+        name: standard-error-conf

@@ -5,11 +5,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding  # ClusterRoleBinding, if we have access accross the cluster
 metadata:
-  name: isd-spinnaker-spinnaker
+  name: isd311-spinnaker-spinnaker
   labels:
-    app: "isd-spinnaker"
+    app: "isd311-spinnaker"
     heritage: "Helm"
-    release: "isd"
+    release: "isd311"
     chart: "spinnaker-2.2.3"
 roleRef:
   apiGroup: rbac.authorization.k8s.io

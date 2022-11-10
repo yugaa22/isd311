@@ -4,12 +4,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
+    moniker.spinnaker.io/application: isd
   labels:
     app: oes
     component: sapor-gate
     heritage: "Helm"
-    release: "isd"
-    chart: "oes-3.11.4"
+    release: "isd311"
+    chart: "oes-3.12.13"
   name: sapor-gate
 spec:
   replicas: 1
@@ -20,13 +21,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/secret: dbcd073b40ed2c5ead5dc0dacd6e860686487ddd1854cc3b9dfc0724a9c455c1
+        checksum/secret: 68f74bcf539b143147ec93182922a9856aa8eeeaa1a0bf334cdb6b52608f954b
+        moniker.spinnaker.io/application: isd
       labels:
         app: oes
         component: sapor-gate
         heritage: "Helm"
-        release: "isd"
-        chart: "oes-3.11.4"
+        release: "isd311"
+        chart: "oes-3.12.13"
     spec:
       containers:
       - image: quay.io/opsmxpublic/ubi8-oes-spin-gate:1.22.1
