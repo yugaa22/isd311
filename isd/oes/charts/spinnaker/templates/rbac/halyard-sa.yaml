@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: isd-spinnaker-halyard
+  name: isd311-spinnaker-halyard
   namespace: isd311
   labels:
-    app: "isd-spinnaker"
+    app: "isd311-spinnaker"
     heritage: "Helm"
-    release: "isd"
+    release: "isd311"
     chart: "spinnaker-2.2.3"

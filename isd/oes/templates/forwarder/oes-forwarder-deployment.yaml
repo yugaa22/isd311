@@ -3,13 +3,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    moniker.spinnaker.io/application: isd
   name: opsmx-controller-controller1
   labels:
     agent.opsmx.com/name: controller1
     agent.opsmx.com/role: controller
     heritage: "Helm"
-    release: "isd"
-    chart: "oes-3.11.4"
+    release: "isd311"
+    chart: "oes-3.12.13"
 spec:
   replicas: 1
   selector:
@@ -22,11 +24,12 @@ spec:
         agent.opsmx.com/name: controller1
         agent.opsmx.com/role: controller
         heritage: "Helm"
-        release: "isd"
-        chart: "oes-3.11.4"
+        release: "isd311"
+        chart: "oes-3.12.13"
       annotations:
         pullversion: "16"
         checksum/configmap: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        moniker.spinnaker.io/application: isd
     spec:
       containers:
       - name: opsmx-controller-controller1

@@ -3,11 +3,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: isd-minio
+  name: isd311-minio
   labels:
     app: minio
     chart: minio-8.0.9
-    release: isd
+    release: isd311
     heritage: Helm
 spec:
   strategy:
@@ -18,18 +18,18 @@ spec:
   selector:
     matchLabels:
       app: minio
-      release: isd
+      release: isd311
   template:
     metadata:
-      name: isd-minio
+      name: isd311-minio
       labels:
         app: minio
-        release: isd
+        release: isd311
       annotations:
-        checksum/secrets: 775ccb85b044d7eedf9e50381e266030ef5845ebfb865baf892e0783d7523d1b
-        checksum/config: 7a7ac5513fcd53ca17fde80ebf50780809224b63001a3969ca32fcaf1caf5999
+        checksum/secrets: 88a6d3477c7ffbfac5a30d976f7971cd38d1628ecd68385c33b1588e79f154c7
+        checksum/config: 12874aa4f3d2b38d5be76ebd97963bbd0b2d9dcb17896fead756416f1705a674
     spec:
-      serviceAccountName: "isd-minio"
+      serviceAccountName: "isd311-minio"
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -52,12 +52,12 @@ spec:
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: isd-minio
+                  name: isd311-minio
                   key: accesskey
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: isd-minio
+                  name: isd311-minio
                   key: secretkey
           resources:
             requests:
@@ -65,7 +65,7 @@ spec:
       volumes:
         - name: export
           persistentVolumeClaim:
-            claimName: isd-minio
+            claimName: isd311-minio
         - name: minio-user
           secret:
-            secretName: isd-minio
+            secretName: isd311-minio

@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd-spinnaker-spin-pipeline-import
+  name: isd311-spinnaker-spin-pipeline-import
   labels:
-    app: "isd-spinnaker"
+    app: "isd311-spinnaker"
     heritage: "Helm"
-    release: "isd"
+    release: "isd311"
     chart: "spinnaker-2.2.3"
 data:
   spin-pipeline-import.sh: |-
@@ -28,19 +28,55 @@ data:
     GATE=$(grep spin-gate /tmp/inst.status | awk '{print $2}')
     FIAT=$(grep spin-fiat /tmp/inst.status | awk '{print $2}')
     ORCA=$(grep spin-orca /tmp/inst.status | awk '{print $2}')
-    IGOR=$(grep spin-igor /tmp/inst.status | awk '{print $2}')
-    ROSCO=$(grep spin-rosco /tmp/inst.status | awk '{print $2}')
-
+    SAPORGATE=$(grep sapor-gate /tmp/inst.status | awk '{print $2}')
+    OESGATE=$(grep oes-gate /tmp/inst.status | awk '{print $2}')
     wait_period=$(($wait_period+10))
-    if [ "$DECK" == "true" ] && [ "$CLOUDCACHING" == "true" ] && [ "$CLOUDRO" == "true" ] && [ "$CLOUDRW" == "true" ] && [ "$CLOUDRODECK" == "true" ] && [ "$FRONT" == "true" ] && [ "$GATE" == "true" ] && [ "$IGOR" == "true" ] && [ "$ORCA" == "true" ] && [ "$ROSCO" == "true" ] && [ "$ECHOWORKER" == "true" ] && [ "$ECHOSCHEDULER" == "true" ];
+    if [ "$DECK" == "true" ] && [ "$CLOUDCACHING" == "true" ] && [ "$CLOUDRO" == "true" ] && [ "$CLOUDRW" == "true" ] && [ "$CLOUDRODECK" == "true" ] && [ "$FRONT" == "true" ] && [ "$GATE" == "true" ] && [ "$ORCA" == "true" ] && [ "$ECHOWORKER" == "true" ] && [ "$ECHOSCHEDULER" == "true" ] && [ "$SAPORGATE" == "true" ] && [ "$OESGATE" == "true" ];
     then
         echo \"Spinnaker and OES is Installed and ready\"
         mkdir -p /tmp/config/git/
         git -c http.sslVerify=false clone https://github.com/OpsMx/sample-pipelines.git /tmp/config/git/
+        if [[ $? != 0 ]]; then
+        echo "ERROR: Failed while cloning the repo https://github.com/OpsMx/sample-pipelines.git"
+          exit 1
+        fi
+        echo "processing.........."
+        sleep 100
         cd /tmp/config/git
         cp -p /tmp/config/spin/config .
-        sed 's/$/ --config config/' create-app.sh >create-app1.sh
-        bash -xe create-app1.sh
+        ### remove commected line in file
+        grep -v "#" create-app.sh > removecomment.sh 
+        sed 's/$/ --config config/' removecomment.sh > create-app1.sh
+        #### Loop begins to save the json if fails it tries for 3 times
+        INPUT=$(sed -n '$=' create-app1.sh)
+        for i in $(seq 1 $INPUT); do
+        command=$(sed -n "$i"p create-app1.sh);
+        $command > /dev/null 2>&1
+        if [[ $? != 0 ]]; then
+          n=0
+          until [ "$n" -ge 3 ]
+          do
+           echo Retrying.....
+           $command > /dev/null 2>&1
+            if [[ $? != 0 ]]; then
+              echo "ERROR: Failed to save the Application using the spincli. Please check the spincli configuration in isd311-spinnaker-spin-config  secret or check the pipelinejson"
+              #exit 1
+              if [[ "$i" == 3 ]]; then
+              echo "ERROR: Failed to save the Application using the spincli. Please check the spincli configuration in isd311-spinnaker-spin-config  secret or check the pipelinejson"
+              exit 1
+              fi
+            else
+              echo "$command"
+              echo "Saved successfully"
+            fi
+           n=$((n+1))
+           sleep 5
+         done
+        else
+          echo "$command"
+          echo "Saved successfully"
+        fi
+        done
         break
     else
         if [ $wait_period -gt 1800 ];

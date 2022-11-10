@@ -7,8 +7,8 @@ metadata:
     app: oes
     component: rabbitmq
     heritage: "Helm"
-    release: "isd"
-    chart: "oes-3.11.4"
+    release: "isd311"
+    chart: "oes-3.12.13"
   name: rabbitmq-service
 spec:
   ports:
@@ -22,4 +22,5 @@ spec:
     targetPort: 15672
   selector:
     app: oes
+    component: rabbitmq
   type: ClusterIP

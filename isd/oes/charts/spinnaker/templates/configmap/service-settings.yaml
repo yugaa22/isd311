@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd-spinnaker-service-settings
+  name: isd311-spinnaker-service-settings
   labels:
-    app: "isd-spinnaker"
+    app: "isd311-spinnaker"
     heritage: "Helm"
-    release: "isd"
+    release: "isd311"
     chart: "spinnaker-2.2.3"
 
 data:

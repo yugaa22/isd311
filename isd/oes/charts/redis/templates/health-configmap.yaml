@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd-redis-health
+  name: isd311-redis-health
   labels:
     app: redis
     chart: redis-10.5.3
     heritage: Helm
-    release: isd
+    release: isd311
 data:
   ping_readiness_local.sh: |-
     response=$(
