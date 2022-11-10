@@ -67,7 +67,7 @@ global:
   # Spinnaker Deck URL configuration; url overwhich spinnaker deck will be accessed
   spinDeck:
     protocol: https                ## Change to https if using SSL
-    host: spin-deck311.iswstash.opsmx.com ## MUST CHANGE
+    host: spindeck311.iswstash.opsmx.com ## MUST CHANGE
     #port: 31464
 
     serviceAnnotations: {}
@@ -82,7 +82,7 @@ global:
   # Spinnaker Gate URL configuration; url overwhich spinnaker gate will be accessed
   spinGate:
     protocol: https
-    host: spin-gate311.iswstash.opsmx.com
+    host: spingate311.iswstash.opsmx.com
     #port: 31465
 
     serviceAnnotations: {}
@@ -96,7 +96,7 @@ global:
   ## OES-UI url configuration
   oesUI:
     protocol: https
-    host: oes-ui311.iswstash.opsmx.com
+    host: oes311.iswstash.opsmx.com
     # Use below port when hostname above is an external IP instead of a hostname
     #port: 31466
 
@@ -109,7 +109,7 @@ global:
   ## OES-Gate url configuration
   oesGate:
     protocol: https
-    host: oes-gate311.iswstash.opsmx.com
+    host: oesgate.iswstash.opsmx.com
     # Use below port when hostname above is an external IP instead of a hostname
     #port: 31467
     
