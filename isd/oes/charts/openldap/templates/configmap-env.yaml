@@ -9,11 +9,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd311-openldap-env
+  name: isd-openldap-env
   labels:
     app: openldap
     chart: openldap-1.2.3
-    release: isd311
+    release: isd
     heritage: Helm
 data:
   LDAP_BACKEND: hdb

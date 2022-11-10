@@ -11,7 +11,7 @@ metadata:
     app: oes
     component: oes-config
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "oes-3.11.4"
   name: oes-config
 spec:
@@ -23,7 +23,7 @@ spec:
         app: oes
         component: oes-config
         heritage: "Helm"
-        release: "isd311"
+        release: "isd"
         chart: "oes-3.11.4"
     spec:
       containers:
@@ -37,5 +37,5 @@ spec:
       volumes:
       - configMap:
           defaultMode: 420
-          name: isd311-oes-datasource-creation
+          name: isd-oes-datasource-creation
         name: datasource-creation

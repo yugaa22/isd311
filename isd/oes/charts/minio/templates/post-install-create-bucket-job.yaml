@@ -3,11 +3,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: isd311-minio-make-bucket-job
+  name: isd-minio-make-bucket-job
   labels:
     app: minio-make-bucket-job
     chart: minio-8.0.9
-    release: isd311
+    release: isd
     heritage: Helm
   annotations:
     "helm.sh/hook": post-install,post-upgrade
@@ -17,7 +17,7 @@ spec:
     metadata:
       labels:
         app: minio-job
-        release: isd311
+        release: isd
     spec:
       restartPolicy: OnFailure      
       volumes:
@@ -25,10 +25,10 @@ spec:
           projected:
             sources:
             - configMap:
-                name: isd311-minio
+                name: isd-minio
             - secret:
-                name: isd311-minio
-      serviceAccountName: "isd311-minio"
+                name: isd-minio
+      serviceAccountName: "isd-minio"
       containers:
       - name: minio-mc
         image: "minio/mc:RELEASE.2020-11-25T23-04-07Z"
@@ -36,7 +36,7 @@ spec:
         command: ["/bin/sh", "/config/initialize"]
         env:
           - name: MINIO_ENDPOINT
-            value: isd311-minio
+            value: isd-minio
           - name: MINIO_PORT
             value: "9000"
         volumeMounts:

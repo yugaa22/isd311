@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd311-oes-datasource-creation
+  name: isd-oes-datasource-creation
   labels:
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "oes-3.11.4"
 data:
   datasource-api.sh: |-

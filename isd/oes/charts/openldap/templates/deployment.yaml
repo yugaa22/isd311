@@ -3,26 +3,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  isd311-openldap
+  name:  isd-openldap
   labels:
     app: openldap
     chart: openldap-1.2.3
-    release: isd311
+    release: isd
     heritage: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: openldap
-      release: isd311
+      release: isd
   template:
     metadata:
       annotations:
-        checksum/configmap-env: 0f76d426e52ddd8c86a21baab21f6357d34623328d542f80a3bd319a7c61f870
-        checksum/configmap-customldif: ca450923c34c6196d7b8520d8df39761ebf8c19b44103950a0f6e91c392009a6
+        checksum/configmap-env: da8e0c8da82ff9254423b65018fe528f67823beb164b9f81ba49b04afd696558
+        checksum/configmap-customldif: 3bf9905ca1d307472278add416a8fff6618651f0ef01b0dcaab0009017d48376
       labels:
         app: openldap
-        release: isd311
+        release: isd
     spec:
       initContainers:
       - name: openldap-init-ldif
@@ -56,9 +56,9 @@ spec:
               containerPort: 636
           envFrom:
             - configMapRef:
-                name: isd311-openldap-env
+                name: isd-openldap-env
             - secretRef:
-                name: isd311-openldap
+                name: isd-openldap
           volumeMounts:
             - name: data
               mountPath: /var/lib/ldap
@@ -86,7 +86,7 @@ spec:
       volumes:
         - name: customldif
           configMap:
-            name: isd311-openldap-customldif
+            name: isd-openldap-customldif
         - name: ldifworkingdir
           emptyDir: {}
         - name: certs
