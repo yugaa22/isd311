@@ -7,7 +7,7 @@ metadata:
     app: oes
     component: gate
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "oes-3.11.4"
   name: oes-gate
 spec:

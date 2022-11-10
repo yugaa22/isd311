@@ -3,32 +3,32 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: isd311-spinnaker-halyard
+  name: isd-spinnaker-halyard
   labels:
-    app: "isd311-spinnaker"
+    app: "isd-spinnaker"
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "spinnaker-2.2.3"
 spec:
-  serviceName: isd311-spinnaker-halyard
+  serviceName: isd-spinnaker-halyard
   replicas: 1
   selector:
     matchLabels:
-      app: "isd311-spinnaker"
-      release: "isd311"
+      app: "isd-spinnaker"
+      release: "isd"
       component: halyard
   template:
     metadata:
       annotations:
-        checksum/configmap: 3a4d925f629b878af2d84e6d70b5511d0a8c6367954c3423ca068365bcf73775
+        checksum/configmap: e8d972766d85ad7f3da7616c75fed56647d5ec75475c8ef0fcf36d2ff117e1f8
       labels:
-        app: "isd311-spinnaker"
+        app: "isd-spinnaker"
         heritage: "Helm"
-        release: "isd311"
+        release: "isd"
         chart: "spinnaker-2.2.3"
         component: halyard
     spec:
-      serviceAccountName: isd311-spinnaker-halyard
+      serviceAccountName: isd-spinnaker-halyard
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
@@ -117,24 +117,24 @@ spec:
         emptyDir: {}
       - name: halyard-overrideurl
         configMap:
-          name: isd311-spinnaker-halyard-overrideurl
+          name: isd-spinnaker-halyard-overrideurl
       - name: secret-decoder
         configMap:
-          name: isd311-spinnaker-spin-secret-decoder
+          name: isd-spinnaker-spin-secret-decoder
       - name: reg-secrets
         secret:
-          secretName: isd311-spinnaker-registry
+          secretName: isd-spinnaker-registry
       - name: additional-profile-config-maps
         configMap:
-          name: isd311-spinnaker-additional-profile-config-maps
+          name: isd-spinnaker-additional-profile-config-maps
       - name: halyard-config
         emptyDir: {}
       - name: service-settings
         configMap:
-          name: isd311-spinnaker-service-settings
+          name: isd-spinnaker-service-settings
       - name: halyard-initscript
         configMap:
-          name: isd311-spinnaker-halyard-init-script
+          name: isd-spinnaker-halyard-init-script
       containers:
       - name: halyard
         image: quay.io/opsmxpublic/ubi8-spin-halyard:opsmx-1.40.0
