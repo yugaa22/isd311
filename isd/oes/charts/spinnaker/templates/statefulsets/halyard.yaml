@@ -3,6 +3,8 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  annotations:
+    moniker.spinnaker.io/application: spin
   name: isd-spinnaker-halyard
   labels:
     app: "isd-spinnaker"
@@ -20,7 +22,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: e8d972766d85ad7f3da7616c75fed56647d5ec75475c8ef0fcf36d2ff117e1f8
+        checksum/configmap: 153886fda869eef5296dc5f0bd7bf800f1cb3e57c9334e9812967bc0823d026e
+        moniker.spinnaker.io/application: spin
       labels:
         app: "isd-spinnaker"
         heritage: "Helm"
@@ -34,15 +37,11 @@ spec:
         runAsUser: 1000
       initContainers:
       - name: "create-halyard-local"
-        image: quay.io/opsmxpublic/awsgit:v2-openssh
+        image: quay.io/opsmxpublic/awsgit:v2-openssh-javalibs
         command:
         - sh
         - /tmp/initscript/init.sh
         env:
-        - name: SPINNAKER_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
         - name: GIT_CLONE_PARAM
           valueFrom:
             secretKeyRef:
@@ -63,6 +62,10 @@ spec:
             secretKeyRef:
               name: opsmx-gitops-auth
               key: dynamicaccountsgituri
+        - name: SPINNAKER_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         volumeMounts:
         - name: halyard-config
           mountPath: /tmp/config

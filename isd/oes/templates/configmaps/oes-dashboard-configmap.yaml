@@ -7,7 +7,8 @@ data:
       dashboard:
         installation:
           mode: OES-AP
-    
+    standardErrorCodes:
+      filePath: /opsmx/conf/standard-error-code.csv
     platformservice.url: http://oes-platform:8095
     autopilot.url: http://oes-autopilot:8090
     oes.sapor.url: http://oes-sapor:8085
@@ -19,7 +20,7 @@ data:
     app:
       sync:
         enabled: true
-    spinnakerLink: https://spindeck311.iswstash.opsmx.com
+    spinnakerLink: /deck/
     
 kind: ConfigMap
 metadata:
@@ -29,4 +30,4 @@ metadata:
     component: dashboard
     heritage: "Helm"
     release: "isd"
-    chart: "oes-3.11.4"
+    chart: "oes-3.12.13"

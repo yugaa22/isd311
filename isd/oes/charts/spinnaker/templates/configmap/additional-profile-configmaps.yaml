@@ -28,7 +28,7 @@ data:
           groupSearchBase: ou=groups,dc=example,dc=org
           groupSearchFilter: member={0}
           managerDn: cn=admin,dc=example,dc=org
-          managerPassword: encrypted:ldappassword:ldappassword
+          managerPassword: opsmxadmin123
           url: ldap://RELEASE_NAME-openldap:389
           userDnPattern: cn={0},dc=example,dc=org
         service: ldap
@@ -67,6 +67,7 @@ data:
             Opsmx.VisibilityApprovalPlugin:
               enabled: true
               version: 1.0.1
+        plugins: null
         repositories:
           opsmx-repo:
             url: https://raw.githubusercontent.com/opsmx/spinnakerPluginRepository/v3.9.0/plugins.json

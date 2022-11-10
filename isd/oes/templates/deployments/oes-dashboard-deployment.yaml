@@ -3,12 +3,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    moniker.spinnaker.io/application: isd
   labels:
     app: oes
     component: dashboard
     heritage: "Helm"
     release: "isd"
-    chart: "oes-3.11.4"
+    chart: "oes-3.12.13"
   name: oes-dashboard
 spec:
   replicas: 1
@@ -20,7 +22,8 @@ spec:
   template:
     metadata:
       annotations:
-        configmap/checksum: 6d3203c048596e5da81305f34e03268b443daf20206e31d10f77f81afb5178c3
+        configmap/checksum: bfdbbd95b11053a548502713f0ae6f99111cd8f853d814981ca6ecf1c31231be
+        moniker.spinnaker.io/application: isd
         prometheus.io/scrape: "true"
         prometheus_io_path: /mgmt/prometheus
         prometheus_io_port: "8094"
@@ -29,10 +32,10 @@ spec:
         component: dashboard
         heritage: "Helm"
         release: "isd"
-        chart: "oes-3.11.4"
+        chart: "oes-3.12.13"
     spec:
       containers:
-      - image: quay.io/opsmxpublic/ubi8-oes-dashboard:v3.11.1
+      - image: quay.io/opsmxpublic/ubi8-oes-dashboard:v3.12.6
         name: oes-dashboard
         ports:
         - containerPort: 8094
@@ -45,6 +48,9 @@ spec:
         - mountPath: /opsmx/conf/bootstrap.yml
           name: bootstrap-config-volume
           subPath: bootstrap.yml
+        - mountPath: /opsmx/conf/standard-error-code.csv
+          name: standard-error-conf
+          subPath: standard-error-codes.csv
         resources:
             {}
         readinessProbe:
@@ -68,3 +74,10 @@ spec:
             path: bootstrap.yml
           secretName: bootstrap
         name: bootstrap-config-volume
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: standard-error-codes.csv
+            path: standard-error-codes.csv
+          name: standard-error-codes-config
+        name: standard-error-conf
