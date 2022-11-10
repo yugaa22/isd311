@@ -3,6 +3,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    moniker.spinnaker.io/application: isd
   name:  isd-openldap
   labels:
     app: openldap
@@ -20,6 +22,7 @@ spec:
       annotations:
         checksum/configmap-env: da8e0c8da82ff9254423b65018fe528f67823beb164b9f81ba49b04afd696558
         checksum/configmap-customldif: 3bf9905ca1d307472278add416a8fff6618651f0ef01b0dcaab0009017d48376
+        moniker.spinnaker.io/application: spin
       labels:
         app: openldap
         release: isd
@@ -45,8 +48,7 @@ spec:
                 command:
                 - /bin/sh
                 - -c
-                - until service slapd status; do sleep 10 ;done;ldapadd -x -D 'cn=admin,dc=example,dc=org'
-                  -w opsmxadmin123 -f /container/service/slapd/assets/config/bootstrap/ldif/custom/10-users.ldif
+                - until service slapd status; do sleep 10 ;done
           imagePullPolicy: IfNotPresent
           args: [--copy-service]
           ports:
@@ -93,4 +95,5 @@ spec:
           emptyDir:
             medium: Memory
         - name: data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: isd-openldap

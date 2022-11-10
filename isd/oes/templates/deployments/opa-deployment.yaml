@@ -3,11 +3,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    moniker.spinnaker.io/application: isd
   labels:
     app: opa
     heritage: "Helm"
     release: "isd"
-    chart: "oes-3.11.4"
+    chart: "oes-3.12.13"
   name: opa
 spec:
   replicas: 1
@@ -16,16 +18,18 @@ spec:
       app: opa
   template:
     metadata:
+      annotations:
+        moniker.spinnaker.io/application: isd
       labels:
         app: opa
         heritage: "Helm"
         release: "isd"
-        chart: "oes-3.11.4"
+        chart: "oes-3.12.13"
       name: opa
     spec:
       containers:
         - name: opa
-          image: openpolicyagent/opa:edge-rootless
+          image: openpolicyagent/opa:latest
           args:
             - "run"
             - "--server"

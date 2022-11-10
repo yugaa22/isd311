@@ -7,7 +7,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "isd"
-    chart: "oes-3.11.4"
+    chart: "oes-3.12.13"
 spec:
   selector:
     app: opa

@@ -7,17 +7,17 @@ data:
 
     # Common Stuff
     repo_type=git
-    repo_name=isd311
+    repo_name=repo_name
     root_folder=pipeline/
     #S3 Specific
     export AWS_ACCESS_KEY_ID=access_key
     export AWS_SECRET_ACCESS_KEY=secret_key
 
     #git mandatory patameters
-    git_url=github.com
-    git_project=yugaa22
-    git_user=yugaa22
-    git_branch=master
+    git_url=example.repo.com
+    git_project=project_name
+    git_user=username
+    git_branch=samplerepo
     #git_password=
     #API
     git_api_url=https://api.github.com/repos  # bitbucket

@@ -8,7 +8,7 @@ metadata:
     component: sapor
     heritage: "Helm"
     release: "isd"
-    chart: "oes-3.11.4"
+    chart: "oes-3.12.13"
   name: oes-sapor
 spec:
   type: ClusterIP
