@@ -3,8 +3,6 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  annotations:
-    moniker.spinnaker.io/application: isd
   name: isd311-redis-master
   labels:
     app: redis
@@ -29,7 +27,6 @@ spec:
         checksum/health: 4b5a6ca441f63aab091f948d27d11792d1e7d47365c21ceb8cca4e3849c33fb8
         checksum/configmap: 32f4dff29667d27eb189d4e6e7061ceffc44e3c1824df5b7e8243a1d98a09553
         checksum/secret: 07c1665e660d7ac3b2501b792eb5cad386a5dee996f189a662c8b73df0c8dc5a
-        moniker.spinnaker.io/application: spin
     spec:      
       securityContext:
         fsGroup: 1001

@@ -9,7 +9,7 @@ metadata:
     agent.opsmx.com/role: controller
     heritage: "Helm"
     release: "isd311"
-    chart: "oes-3.12.13"
+    chart: "oes-3.11.4"
 data:
   configFile: |
     serviceHostname: opsmx-controller-controller1
@@ -19,4 +19,3 @@ data:
     #agentAdvertisePort: "443"
     serviceAuth:
       currentKeyName: "public.pem"
-      headerMutationKeyName: "public.pem"

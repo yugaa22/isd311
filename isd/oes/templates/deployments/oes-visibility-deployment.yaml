@@ -3,14 +3,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    moniker.spinnaker.io/application: isd
   labels:
     app: oes
     component: visibility
     heritage: "Helm"
     release: "isd311"
-    chart: "oes-3.12.13"
+    chart: "oes-3.11.4"
   name: oes-visibility
 spec:
   replicas: 1
@@ -22,8 +20,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap/checksum: e8fbec5cc12a16762885462e02311900447e5ba9cf561bc9c8ab596a1facb10d
-        moniker.spinnaker.io/application: isd
+        configmap/checksum: e0179a1a36c2f41d64e311d56aae4720f1395fff21d9e82c3c095bc4592d895f
         prometheus.io/scrape: "true"
         prometheus_io_path: /mgmt/prometheus
         prometheus_io_port: "8096"
@@ -32,7 +29,7 @@ spec:
         component: visibility
         heritage: "Helm"
         release: "isd311"
-        chart: "oes-3.12.13"
+        chart: "oes-3.11.4"
     spec:
       initContainers:
       - name: db-check
@@ -53,9 +50,6 @@ spec:
         - mountPath: /opsmx/conf/bootstrap.yml
           name: bootstrap-config-volume
           subPath: bootstrap.yml
-        - mountPath: /opsmx/conf/standard-error-code.csv
-          name: standard-error-conf
-          subPath: standard-error-codes.csv
         resources:
             {}
         readinessProbe:
@@ -79,10 +73,3 @@ spec:
             path: bootstrap.yml
           secretName: bootstrap
         name: bootstrap-config-volume
-      - configMap:
-          defaultMode: 420
-          items:
-          - key: standard-error-codes.csv
-            path: standard-error-codes.csv
-          name: standard-error-codes-config
-        name: standard-error-conf

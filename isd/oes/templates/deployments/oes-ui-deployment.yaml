@@ -3,14 +3,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    moniker.spinnaker.io/application: isd
   labels:
     app: oes
     component: ui
     heritage: "Helm"
     release: "isd311"
-    chart: "oes-3.12.13"
+    chart: "oes-3.11.4"
   name: oes-ui
 spec:
   replicas: 1
@@ -21,14 +19,13 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: ec1928c046c894ea0592049ca7ba025a7b4a3760cc5ec54f4bcffe0637d0d957
-        moniker.spinnaker.io/application: isd
+        checksum/configmap: 7b0834042b6c5ac2f7297cfb202458654ac219c6a3b7e61e410996dea9c7c508
       labels:
         app: oes
         component: ui
         heritage: "Helm"
         release: "isd311"
-        chart: "oes-3.12.13"
+        chart: "oes-3.11.4"
     spec:
       containers:
       - image: quay.io/opsmxpublic/ubi8-oes-ui:v3.11.1
@@ -38,10 +35,10 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: config-dir
-          mountPath: /var/www/html/ui/assets/config/app-config.json
+          mountPath: /var/www/html/assets/config/app-config.json
           subPath: app-config.json
         - name: config-dir
-          mountPath: /var/www/html/ui/assets/config/help-text.json
+          mountPath: /var/www/html/assets/config/help-text.json
           subPath: help-text.json
         - mountPath: /etc/nginx/nginx.conf
           name: nginx-config
@@ -53,7 +50,7 @@ spec:
           periodSeconds: 5
         livenessProbe:
           httpGet:
-            path: /ui/indexl.html
+            path: /health
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 5
