@@ -3,36 +3,36 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: isd311-redis-master
+  name: isd-redis-master
   labels:
     app: redis
     chart: redis-10.5.3
-    release: isd311
+    release: isd
     heritage: Helm
 spec:
   selector:
     matchLabels:
       app: redis
-      release: isd311
+      release: isd
       role: master
-  serviceName: isd311-redis-headless
+  serviceName: isd-redis-headless
   template:
     metadata:
       labels:
         app: redis
         chart: redis-10.5.3
-        release: isd311
+        release: isd
         role: master
       annotations:
-        checksum/health: 4b5a6ca441f63aab091f948d27d11792d1e7d47365c21ceb8cca4e3849c33fb8
-        checksum/configmap: 32f4dff29667d27eb189d4e6e7061ceffc44e3c1824df5b7e8243a1d98a09553
-        checksum/secret: 07c1665e660d7ac3b2501b792eb5cad386a5dee996f189a662c8b73df0c8dc5a
+        checksum/health: 36567aac6587929dc97be63c28c0aa1ec58d167572f3e5f191536195dc588d15
+        checksum/configmap: 42a460f87c190197092321f0ae70720d271a2f6738150858f02b13ca057dae95
+        checksum/secret: 7a3ad5e392b6205688fb136db00adc54a428d94065c44e3631f9bbe91461ffb4
     spec:      
       securityContext:
         fsGroup: 1001
       serviceAccountName: "default"
       containers:
-      - name: isd311-redis
+      - name: isd-redis
         image: "quay.io/opsmxpublic/bitnami-redis:5.0.7-debian-10-r0"
         imagePullPolicy: "IfNotPresent"
         securityContext:
@@ -63,7 +63,7 @@ spec:
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: isd311-redis
+              name: isd-redis
               key: redis-password
         - name: REDIS_PORT
           value: "6379"
@@ -107,11 +107,11 @@ spec:
       volumes:
       - name: health
         configMap:
-          name: isd311-redis-health
+          name: isd-redis-health
           defaultMode: 0755
       - name: config
         configMap:
-          name: isd311-redis
+          name: isd-redis
       - name: redis-tmp-conf
         emptyDir: {}
   volumeClaimTemplates:
@@ -119,7 +119,7 @@ spec:
         name: redis-data
         labels:
           app: redis
-          release: isd311
+          release: isd
           heritage: Helm
           component: master
       spec:

@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd311-spinnaker-spin-pipeline-import
+  name: isd-spinnaker-spin-pipeline-import
   labels:
-    app: "isd311-spinnaker"
+    app: "isd-spinnaker"
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "spinnaker-2.2.3"
 data:
   spin-pipeline-import.sh: |-

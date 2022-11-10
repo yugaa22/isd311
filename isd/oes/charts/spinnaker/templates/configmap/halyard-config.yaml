@@ -3,25 +3,25 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd311-spinnaker-halyard-config
+  name: isd-spinnaker-halyard-config
   labels:
-    app: "isd311-spinnaker"
+    app: "isd-spinnaker"
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "spinnaker-2.2.3"
 data:
   install.sh: |
     #!/bin/bash
 
     # Wait for the Hal daemon to be ready
-    export DAEMON_ENDPOINT=http://isd311-spinnaker-halyard:8064
+    export DAEMON_ENDPOINT=http://isd-spinnaker-halyard:8064
     export HAL_COMMAND="hal --daemon-endpoint $DAEMON_ENDPOINT"
     until $HAL_COMMAND --ready; do sleep 10 ; done # end of if not gitops
 
     # This is performed by post-start script in halyard pod
     # in case gitopsHalyard is enabled
   clean.sh: |
-    export HAL_COMMAND='hal --daemon-endpoint http://isd311-spinnaker-halyard:8064'
+    export HAL_COMMAND='hal --daemon-endpoint http://isd-spinnaker-halyard:8064'
     if $HAL_COMMAND --ready; then
       $HAL_COMMAND deploy clean -q
     fi
@@ -34,7 +34,7 @@ data:
     # Storage
     
     echo encrypted:miniopassword:miniopassword | $HAL_COMMAND config storage s3 edit \
-        --endpoint http://isd311-minio:9000 \
+        --endpoint http://isd-minio:9000 \
         --access-key-id encrypted:miniopassword:miniopassword \
         --secret-access-key --bucket spinnaker \
         --path-style-access true
@@ -87,7 +87,7 @@ data:
 
 
     # Enable Authentication by default
-    $HAL_COMMAND config security authn ldap edit --url ldap://isd311-openldap:389 --user-dn-pattern  'cn={0},dc=example,dc=org'
+    $HAL_COMMAND config security authn ldap edit --url ldap://isd-openldap:389 --user-dn-pattern  'cn={0},dc=example,dc=org'
     $HAL_COMMAND config security authn ldap enable
 
     # Enable Authorization

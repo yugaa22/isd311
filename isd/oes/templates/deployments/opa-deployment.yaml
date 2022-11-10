@@ -6,7 +6,7 @@ metadata:
   labels:
     app: opa
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "oes-3.11.4"
   name: opa
 spec:
@@ -19,7 +19,7 @@ spec:
       labels:
         app: opa
         heritage: "Helm"
-        release: "isd311"
+        release: "isd"
         chart: "oes-3.11.4"
       name: opa
     spec:

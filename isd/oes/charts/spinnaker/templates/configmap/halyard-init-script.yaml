@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: isd311-spinnaker-halyard-init-script
+  name: isd-spinnaker-halyard-init-script
   labels:
-    app: "isd311-spinnaker"
+    app: "isd-spinnaker"
     heritage: "Helm"
-    release: "isd311"
+    release: "isd"
     chart: "spinnaker-2.2.3"
 data:
   init.sh: |
@@ -34,16 +34,16 @@ data:
     rm -rf /tmp/spinnaker/test
     DYNAMIC_ACCOUNTS_REPO=`echo $DYNAMIC_ACCOUNTS_REPO | sed 's/ *$//g'`
     sed -i  s/SPINNAKER_NAMESPACE/${SPINNAKER_NAMESPACE}/ /tmp/spinnaker/.hal/config
-    sed -i  s/RELEASE_NAME/isd311/g /tmp/spinnaker/.hal/config
+    sed -i  s/RELEASE_NAME/isd/g /tmp/spinnaker/.hal/config
     sed -i  s/GIT_USER/${GIT_USER}/g /tmp/spinnaker/.hal/default/profiles/spinnakerconfig.yml
     sed -i  s/GIT_TOKEN/${GIT_TOKEN}/g /tmp/spinnaker/.hal/default/profiles/spinnakerconfig.yml
     sed -i  's|DYNAMIC_ACCOUNTS_REPO|'"${DYNAMIC_ACCOUNTS_REPO}"'|' /tmp/spinnaker/.hal/default/profiles/spinnakerconfig.yml
     sed -i  s%DYN_ACCNT_CONFG_PATH%/%g /tmp/spinnaker/.hal/default/profiles/spinnakerconfig.yml
-    sed -i  s/RELEASE_NAME/isd311/g /tmp/spinnaker/.hal/default/service-settings/redis.yml
+    sed -i  s/RELEASE_NAME/isd/g /tmp/spinnaker/.hal/default/service-settings/redis.yml
     yq e '.deploymentConfigurations.[].security.authz.enabled = "false"' /tmp/spinnaker/.hal/config > /tmp/spinnaker/.hal/config1
     mv /tmp/spinnaker/.hal/config1 /tmp/spinnaker/.hal/config
     if [ -f /tmp/spinnaker/.hal/default/profiles/fiat-local.yml ]; then
-    sed -i  s/RELEASE_NAME/isd311/g /tmp/spinnaker/.hal/default/profiles/fiat-local.yml
+    sed -i  s/RELEASE_NAME/isd/g /tmp/spinnaker/.hal/default/profiles/fiat-local.yml
     fi
     sed -i  s/SPINNAKER_NAMESPACE/${SPINNAKER_NAMESPACE}/ /tmp/spinnaker/.hal/default/profiles/orca-local.yml
     printf 'server.address: 0.0.0.0\n' > /tmp/config/halyard-local.yml

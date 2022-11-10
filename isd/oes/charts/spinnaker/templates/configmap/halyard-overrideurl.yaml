@@ -87,7 +87,7 @@ data:
         ENDPOINT_IP=""
         PORT=8084
 
-        export DAEMON_ENDPOINT=http://isd311-spinnaker-halyard:8064
+        export DAEMON_ENDPOINT=http://isd-spinnaker-halyard:8064
         export HAL_COMMAND="hal --daemon-endpoint $DAEMON_ENDPOINT"
 
         ## Wait for $EXTERNAL_IP_CHECK_DELAY till K8s assins a load Balancer IP to oes-gate
@@ -109,7 +109,7 @@ data:
         ENDPOINT_IP=""
         PORT=9000
 
-        export DAEMON_ENDPOINT=http://isd311-spinnaker-halyard:8064
+        export DAEMON_ENDPOINT=http://isd-spinnaker-halyard:8064
         export HAL_COMMAND="hal --daemon-endpoint $DAEMON_ENDPOINT"
 
         ## Wait for $EXTERNAL_IP_CHECK_DELAY till K8s assins a load Balancer IP to oes-gate
@@ -145,4 +145,4 @@ data:
 
 kind: ConfigMap
 metadata:
-  name: isd311-spinnaker-halyard-overrideurl
+  name: isd-spinnaker-halyard-overrideurl
