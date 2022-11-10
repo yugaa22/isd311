@@ -3,13 +3,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    moniker.spinnaker.io/application: isd
   labels:
     app: opa
     heritage: "Helm"
     release: "isd311"
-    chart: "oes-3.12.13"
+    chart: "oes-3.11.4"
   name: opa
 spec:
   replicas: 1
@@ -18,13 +16,11 @@ spec:
       app: opa
   template:
     metadata:
-      annotations:
-        moniker.spinnaker.io/application: isd
       labels:
         app: opa
         heritage: "Helm"
         release: "isd311"
-        chart: "oes-3.12.13"
+        chart: "oes-3.11.4"
       name: opa
     spec:
       containers:

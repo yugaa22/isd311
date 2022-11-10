@@ -8,7 +8,7 @@ metadata:
     component: autopilot
     heritage: "Helm"
     release: "isd311"
-    chart: "oes-3.12.13"
+    chart: "oes-3.11.4"
   name: oes-autopilot
 spec:
   type: ClusterIP

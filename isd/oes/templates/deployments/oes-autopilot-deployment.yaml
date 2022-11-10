@@ -3,15 +3,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    moniker.spinnaker.io/application: isd
   name: oes-autopilot
   labels:
     app: oes
     component: autopilot
     heritage: "Helm"
     release: "isd311"
-    chart: "oes-3.12.13"
+    chart: "oes-3.11.4"
 spec:
   replicas: 1
   selector:
@@ -25,10 +23,9 @@ spec:
         component: autopilot
         heritage: "Helm"
         release: "isd311"
-        chart: "oes-3.12.13"
+        chart: "oes-3.11.4"
       annotations:
         configmap/checksum: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
-        moniker.spinnaker.io/application: isd
         prometheus.io/scrape: "true"
         prometheus_io_path: /mgmt/prometheus
         prometheus_io_port: "8090"
@@ -43,13 +40,6 @@ spec:
               path: bootstrap.yml
             secretName: bootstrap
           name: bootstrap-config-volume
-        - configMap:
-            defaultMode: 420
-            items:
-            - key: standard-error-codes.csv
-              path: standard-error-codes.csv
-            name: standard-error-codes-config
-          name: standard-error-conf
       initContainers:
       - name: db-check
         image: quay.io/opsmxpublic/postgres:9.6.5
@@ -74,9 +64,6 @@ spec:
           - mountPath: /opsmx/conf/bootstrap.yml
             name: bootstrap-config-volume
             subPath: bootstrap.yml
-          - mountPath: /opsmx/conf/standard-error-code.csv
-            name: standard-error-conf
-            subPath: standard-error-codes.csv
           readinessProbe:
             tcpSocket:
               port: 8090
